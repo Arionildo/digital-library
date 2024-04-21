@@ -1,7 +1,7 @@
-package com.escouto.digitallibrary.controller;
+package com.escouto.digitallibrary.presentation.controller;
 
-import com.escouto.digitallibrary.entity.Book;
-import com.escouto.digitallibrary.service.BookService;
+import com.escouto.digitallibrary.application.service.BookService;
+import com.escouto.digitallibrary.presentation.dto.BookDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -23,25 +23,26 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EntityModel<Book>>> getAllBooks() {
-        List<Book> books = bookService.getAllBooks();
-        List<EntityModel<Book>> bookModels = books.stream()
+    public ResponseEntity<List<EntityModel<BookDTO>>> getAllBooks() {
+        List<BookDTO> books = bookService.getAllBooks();
+        List<EntityModel<BookDTO>> bookModels = books.stream()
                 .map(this::addSelfLink)
                 .toList();
         return ResponseEntity.ok(bookModels);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<Book>> getBookById(@PathVariable Long id) {
+    public ResponseEntity<EntityModel<BookDTO>> getBookById(@PathVariable Long id) {
         return bookService.getBookById(id)
-                .map(book -> ResponseEntity.ok(addSelfLink(book)))
+                .map(this::addSelfLink)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<EntityModel<Book>> createBook(@RequestBody Book book) {
-        Book savedBook = bookService.saveBook(book);
-        return ResponseEntity.status(HttpStatus.CREATED).body(addSelfLink(savedBook));
+    public ResponseEntity<EntityModel<BookDTO>> createBook(@RequestBody BookDTO bookDTO) {
+        BookDTO savedBookDTO = bookService.saveBook(bookDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addSelfLink(savedBookDTO));
     }
 
     @DeleteMapping("/{id}")
@@ -54,8 +55,8 @@ public class BookController {
         }
     }
 
-    private EntityModel<Book> addSelfLink(Book book) {
-        return EntityModel.of(book,
-                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(BookController.class).getBookById(book.getId())).withSelfRel());
+    private EntityModel<BookDTO> addSelfLink(BookDTO bookDTO) {
+        return EntityModel.of(bookDTO,
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(BookController.class).getBookById(bookDTO.getId())).withSelfRel());
     }
 }

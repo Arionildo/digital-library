@@ -1,8 +1,10 @@
-package com.escouto.digitallibrary.service;
+package com.escouto.digitallibrary.application.service;
 
-import com.escouto.digitallibrary.entity.Book;
-import com.escouto.digitallibrary.repository.BookRepository;
-import com.escouto.digitallibrary.util.CacheNames;
+import com.escouto.digitallibrary.application.mapper.BookMapper;
+import com.escouto.digitallibrary.domain.entity.Book;
+import com.escouto.digitallibrary.infrastructure.persistence.BookRepository;
+import com.escouto.digitallibrary.infrastructure.util.CacheNames;
+import com.escouto.digitallibrary.presentation.dto.BookDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,31 +18,36 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final BookMapper bookMapper;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper) {
         this.bookRepository = bookRepository;
+        this.bookMapper = bookMapper;
     }
 
     @Override
     @Transactional(readOnly = true)
     @Cacheable(value = CacheNames.BOOKS)
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    public List<BookDTO> getAllBooks() {
+        return bookRepository.findAll().stream()
+                .map(bookMapper::toDTO)
+                .toList();
     }
 
     @Override
     @Transactional(readOnly = true)
     @Cacheable(value = CacheNames.BOOKS, key = "#id")
-    public Optional<Book> getBookById(Long id) {
-        return bookRepository.findById(id);
+    public Optional<BookDTO> getBookById(Long id) {
+        return bookRepository.findById(id).map(bookMapper::toDTO);
     }
 
     @Override
     @Transactional
     @CacheEvict(value = CacheNames.BOOKS, allEntries = true)
-    public Book saveBook(Book book) {
-        return bookRepository.save(book);
+    public BookDTO saveBook(BookDTO bookDTO) {
+        Book book = bookMapper.toEntity(bookDTO);
+        return bookMapper.toDTO(bookRepository.save(book));
     }
 
     @Override

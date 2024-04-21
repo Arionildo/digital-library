@@ -1,11 +1,11 @@
-package com.escouto.digitallibrary.entity;
+package com.escouto.digitallibrary.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
-public class Review {
+public final class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

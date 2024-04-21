@@ -1,11 +1,15 @@
-package com.escouto.digitallibrary.entity;
+package com.escouto.digitallibrary.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
+@AllArgsConstructor
+@Builder
 @Data
-public class Book {
+public final class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,4 +19,8 @@ public class Book {
 
     @Column(nullable = false)
     private String author;
+
+    public Book() {
+        //
+    }
 }

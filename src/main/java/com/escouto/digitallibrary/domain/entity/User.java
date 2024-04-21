@@ -1,4 +1,4 @@
-package com.escouto.digitallibrary.entity;
+package com.escouto.digitallibrary.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,7 +6,7 @@ import lombok.*;
 @Entity
 @Table(name = "users")
 @Data
-public class User {
+public final class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

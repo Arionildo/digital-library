@@ -1,6 +1,6 @@
-package com.escouto.digitallibrary.service;
+package com.escouto.digitallibrary.application.service;
 
-import com.escouto.digitallibrary.entity.Book;
+import com.escouto.digitallibrary.presentation.dto.BookDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,32 +9,37 @@ public interface BookService {
 
     /**
      * Retrieves all books from the database.
+     *
      * @return a list of all books
      */
-    List<Book> getAllBooks();
+    List<BookDTO> getAllBooks();
 
     /**
      * Retrieves a book by its ID.
+     *
      * @param id the ID of the book to retrieve
      * @return an Optional containing the book, or empty if not found
      */
-    Optional<Book> getBookById(Long id);
+    Optional<BookDTO> getBookById(Long id);
 
     /**
      * Saves a new book or updates an existing one.
-     * @param book the book to save or update
-     * @return the saved or updated book
+     *
+     * @param bookDTO the DTO representing the book to save or update
+     * @return the saved or updated book DTO
      */
-    Book saveBook(Book book);
+    BookDTO saveBook(BookDTO bookDTO);
 
     /**
      * Deletes a book by its ID.
+     *
      * @param id the ID of the book to delete
      */
     void deleteBook(Long id);
 
     /**
      * Checks if a book with the given ID exists.
+     *
      * @param id the ID of the book to check
      * @return true if the book exists, false otherwise
      */
