@@ -5,6 +5,8 @@ import lombok.*;
 
 @Entity
 @Table(name = "users")
+@AllArgsConstructor
+@Builder
 @Data
 public final class User {
     @Id
@@ -13,4 +15,8 @@ public final class User {
 
     @Column(nullable = false)
     private String username;
+
+    public User() {
+        //
+    }
 }

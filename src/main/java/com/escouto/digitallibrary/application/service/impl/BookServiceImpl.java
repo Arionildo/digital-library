@@ -1,6 +1,7 @@
-package com.escouto.digitallibrary.application.service;
+package com.escouto.digitallibrary.application.service.impl;
 
 import com.escouto.digitallibrary.application.mapper.BookMapper;
+import com.escouto.digitallibrary.application.service.BookService;
 import com.escouto.digitallibrary.domain.entity.Book;
 import com.escouto.digitallibrary.infrastructure.persistence.BookRepository;
 import com.escouto.digitallibrary.infrastructure.util.CacheNames;

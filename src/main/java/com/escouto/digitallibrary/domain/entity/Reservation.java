@@ -1,11 +1,15 @@
 package com.escouto.digitallibrary.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
+@AllArgsConstructor
+@Builder
 @Data
 public final class Reservation {
     @Id
@@ -22,6 +26,9 @@ public final class Reservation {
 
     @Column(nullable = false)
     private LocalDateTime reservedAt;
+
+    @Column(nullable = false)
+    private LocalDateTime endDate;
 
     public Reservation() {
         //
