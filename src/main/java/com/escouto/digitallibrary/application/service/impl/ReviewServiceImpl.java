@@ -6,12 +6,16 @@ import com.escouto.digitallibrary.domain.entity.Review;
 import com.escouto.digitallibrary.infrastructure.persistence.ReviewRepository;
 import com.escouto.digitallibrary.presentation.dto.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames = "reviews")
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
@@ -25,6 +29,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true)
     public ReviewDTO saveReview(ReviewDTO reviewDTO) {
         Review review = reviewMapper.toEntity(reviewDTO);
         return reviewMapper.toDTO(reviewRepository.save(review));
@@ -32,6 +37,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable
     public List<ReviewDTO> getAllReviews() {
         return reviewRepository.findAll().stream()
                 .map(reviewMapper::toDTO)
@@ -40,6 +46,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable
     public List<ReviewDTO> getReviewsByBookId(Long bookId) {
         return reviewRepository.findByBookId(bookId).stream()
                 .map(reviewMapper::toDTO)
@@ -48,9 +55,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable
     public List<ReviewDTO> getReviewsByUserId(Long userId) {
         return reviewRepository.findByUserId(userId).stream()
                 .map(reviewMapper::toDTO)
                 .toList();
-   }
+    }
 }
