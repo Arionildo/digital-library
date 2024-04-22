@@ -1,6 +1,7 @@
 package com.escouto.digitallibrary.application.service;
 
 import com.escouto.digitallibrary.presentation.dto.BookDTO;
+import com.escouto.digitallibrary.presentation.dto.BookFilterDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,4 +45,11 @@ public interface BookService {
      * @return true if the book exists, false otherwise
      */
     boolean existsById(Long id);
+
+    /**
+     * Searches for books based on the provided filter criteria.
+     * @param filter the filter criteria
+     * @return a list of books matching the filter criteria
+     */
+    List<BookDTO> searchBooks(BookFilterDTO filter);
 }
