@@ -35,7 +35,7 @@ In our project, we adopted several technologies and design choices to ensure eff
 
 **Database Design Choices**
 
-![Diagram](./src/main/resources/db/Diagram.png)
+![Diagram](./src/main/resources/db/Diagram.PNG)
 
 - **Normalized Data Structure:** Minimizes redundancy and ensures data integrity.
 - **Foreign Key Relationships:** Establish associations between entities for efficient data retrieval.
